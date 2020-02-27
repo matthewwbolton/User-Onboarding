@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFormik, Form, Field} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import Users from './Users';
 
 
-const UserForm = ({values, errors, touched}) => {
+const UserForm = ({values, errors, touched, status}) => {
+
+    const [users, setUsers] = useState([]);
+    
+    useEffect(() => {
+        console.log('Status has Changed', status);
+        status && setUsers(users => [...users, status])
+    }, [status])
+
+
     return (
         <div>
             <Form>
@@ -18,10 +28,14 @@ const UserForm = ({values, errors, touched}) => {
                 <Field id='password' type='password' name='password' placeholder='Password' value={values.password}  />
                 {touched.password && errors.password && <p>{errors.password}</p>}
                 <label htmlFor='tos'>Terms of Service</label>
-                <Field id='tos' type='checkbox' name='tos' value={values.tos}/>
+                <Field id='tos' type='checkbox' name='tos' ischecked={values.tos}/>
                 <button type='submit'>Submit</button>
-            </Form>   
+            </Form>
+            <Users users={users}/>  
         </div>
+       
+            
+        
     );
 };
 
@@ -43,12 +57,20 @@ const FormikUserForm = withFormik({
             .required('This field is required'),
         password: Yup.string()
             .min(6)
-            .required('You must enter a valid password')  
-
+            .required('You must enter a valid password')
     }),
 
-    handleSubmit(values){
+    handleSubmit(values, {setStatus, resetForm}){
         console.log(values);
+        axios.post('https://reqres.in/api/users/', values)
+              .then(res =>{
+                  console.log('Server Response', res.data);
+                  setStatus(res.data);
+                  resetForm();
+              })
+              .catch(err => {
+                  console.log('Server Error', err)
+              })
 
     }
     
