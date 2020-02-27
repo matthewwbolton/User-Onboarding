@@ -6,8 +6,8 @@ const Users = (props) => {
             {props.users.map((elem, i) => {
                 return <div key={i}>
                     <h1>{elem.name}</h1>
-                    <h2>{elem.email}</h2>
-                    <h3>{elem.tos}</h3>
+                    <h2>{elem.role}</h2>
+                    <h3>{elem.email}</h3>
                     </div>
                     
             })}

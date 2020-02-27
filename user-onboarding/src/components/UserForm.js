@@ -24,6 +24,17 @@ const UserForm = ({values, errors, touched, status}) => {
                 <label htmlFor='eamil'>Email:</label>
                 <Field id='email' type='email' name='email' placeholder='Email' value={values.email}  />
                 {touched.email && errors.email && <p>{errors.email}</p>}
+                <label htmlFor='role'>Role:</label>
+                <Field id='role' as='select' type='text' value={values.role}>
+                    <option>Choose One of the Options Below</option>
+                    <option value='Web Development'>Web Development</option>
+                    <option value='Data Science'>Data Science</option>
+                    <option value='Android Development'>Android Development</option>
+                    <option value='iOS Development'>iOS Development</option>
+                    <option value='Java Backend Development'>Java Backend Development</option>
+                    <option value='Ruby on Rails'>Ruby on Rails</option>
+                    <option value='User Experience Design'>User Experience Design</option>
+                </Field>  
                 <label htmlFor='password'>Password:</label>
                 <Field id='password' type='password' name='password' placeholder='Password' value={values.password}  />
                 {touched.password && errors.password && <p>{errors.password}</p>}
@@ -40,10 +51,11 @@ const UserForm = ({values, errors, touched, status}) => {
 };
 
 const FormikUserForm = withFormik({
-    mapPropsToValues({name, email, password, tos}) {
+    mapPropsToValues({name, email, role, password, tos}) {
        return {
         name: name || '',
         email: email || '',
+        role: role || '',
         password: password || '',
         tos: tos ||  false
        }
